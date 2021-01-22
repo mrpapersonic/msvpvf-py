@@ -8,7 +8,7 @@ as far as i know, there are 3 generations of project files:
 
 Gen 1 | Gen 2 | Gen 3
 --- | --- | ---
-8.0 - 10.0 | 11.0 - 14.0 | 15.0 - Now
+8.0 - 11.0 | 12.0 - 14.0 | 15.0 - Now
 
 of course, all generations later than the generation before can open these files, for example vegas 14 can open vegas 10 project files
 
