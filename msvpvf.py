@@ -9,14 +9,13 @@ def main(argv):
     args = parser.parse_args()
     if args.input:
         inputfile = args.input
-
     if os.path.exists(inputfile):
         fp = open(inputfile, "rb")
         tes = fp.read()
         fp.close()
         test = bytearray(tes)
     else:
-        print("File doesn't exist!")
+        print("Input file doesn't exist!")
         exit()
     print("Project file version: " + str(test[0x46]) + ".0")
     answer = ""
