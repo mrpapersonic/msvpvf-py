@@ -6,26 +6,39 @@ def main(argv):
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--input', help="input file", metavar='<input>', required=True)
     parser.add_argument('-o', '--output', help="output file, defaults to '(MS,VEG)_(version)_(original name).(vf,veg)'", metavar='<output>')
+    parser.add_argument('--version', help="output file version", metavar='<version>')
+    parser.add_argument('--type', help="output file type, vf/veg", metavar='<type>')
     args = parser.parse_args()
     if args.input:
         inputfile = args.input
     if os.path.exists(inputfile):
         fp = open(inputfile, "rb")
-        tes = fp.read()
+        test = bytearray(fp.read())
         fp.close()
-        test = bytearray(tes)
     else:
         print("Input file doesn't exist!")
         exit()
-    print("Project file version: " + str(test[0x46]) + ".0")
-    answer = ""
+    if test[0x18] == int("F6", 16):
+        project = "Movie Studio "
+    elif test[0x18] == int("EF", 16):
+        project = "VEGAS Pro "
+    else:
+        project = "Unknown "
+    print("Project file version: " + project + str(test[0x46]) + ".0")
+    if not args.version:
+        answer = ""
+    else:
+        answer = args.version
     while answer not in ["8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18"]:
         print("Which version of VEGAS would you like it to be spoofed to? [8-18]: ", end = "")
         answer = input().lower()
-    answer2 = ""
-    while answer2 not in ["veg", "vf"]:
-        print("Would you like it to be VEGAS Pro or Movie Studio? [veg,vf]: ", end = "")
-        answer2 = input().lower()
+    if not args.type:
+        answer2 = ""
+        while answer2 not in ["veg", "vf"]:
+            print("Would you like it to be VEGAS Pro or Movie Studio? [veg,vf]: ", end = "")
+            answer2 = input().lower()
+    else:
+        answer2 = args.type
     if answer2 == "vf":
         filename_prefix = "MS"
         test[0x18] = int("F6", 16)
@@ -62,6 +75,9 @@ def main(argv):
         test[0x25] = int("8E", 16)
         test[0x26] = int("DB", 16)
         test[0x27] = int("8A", 16)
+    else:
+        print("Invalid type!")
+        exit()
     test[0x46] = int(answer)
     filename_wo_ext = Path(inputfile).with_suffix('')
     if args.output:
