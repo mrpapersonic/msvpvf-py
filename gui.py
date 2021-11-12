@@ -9,7 +9,7 @@ def round_down(num, divisor):
 def open_veg_file():
     filepath.set(tkinter.filedialog.askopenfilename(title="Select project file", filetypes=[("Project files", ".veg .vf"), ("All Files", "*.*")]))
     with open(filepath.get(), 'rb') as file:
-        version_of_file.set("Project file version: {0}".format(file.read()[0x46]))
+        version_of_file.set("Project file version: %s" % (str(bytearray(file.read())[0x46])))
         window.update_idletasks()
     # eventually add shit here
 
