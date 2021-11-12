@@ -36,8 +36,7 @@ def main(args):
     if not args.type:
         answer2 = ""
         while answer2 not in ["veg", "vf"]:
-            print("Would you like it to be VEGAS Pro or Movie Studio? [veg,vf]: ", end="")
-            answer2 = input().lower()
+            answer2 = input("Would you like it to be VEGAS Pro or Movie Studio? [veg,vf]: ").lower()
     else:
         answer2 = args.type
     filename_prefix, typehex = type_hex(answer2)
