@@ -43,11 +43,11 @@ def main(args):
     filename_prefix, typehex = type_hex(answer2)
     test[0x18:0x27] = typehex
     test[0x46] = int(answer)
-    filename_wo_ext = os.path.splitext(inputfile)[0]
+    filename_wo_ext = os.path.basename(os.path.splitext(inputfile)[0])
     if args.output:
         outputfile = args.output
     else:
-        outputfile = filename_prefix + "_V" + answer + "_" + str(filename_wo_ext) + "." + answer2
+        outputfile = os.path.abspath(os.path.dirname(inputfile)) + "/" + filename_prefix + "_V" + answer + "_" + str(filename_wo_ext) + "." + answer2
     with open(outputfile, 'wb') as target:
     	target.write(test)
 if __name__ == "__main__":
