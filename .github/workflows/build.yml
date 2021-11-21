@@ -1,0 +1,73 @@
+name: pyinstaller
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-posix:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+
+      - name: Build
+        run: |
+          pyinstaller gui.py
+          zip -r ${{ matrix.os }}.zip dist
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.os }}
+          path: ${{ matrix.os }}.zip
+  build-win:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        msystem: [mingw32]
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup msys2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{ matrix.msystem }}
+          update: true
+          install: >-
+            base-devel
+            mingw-w64-i686-toolchain
+            mingw-w64-i686-python-pip
+            zip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pyinstaller
+
+      - name: Build
+        run: |
+          pyinstaller gui.py
+          zip -r ${{ matrix.msystem }}.zip dist
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.msystem }}
+          path: ${{ matrix.msystem }}.zip
