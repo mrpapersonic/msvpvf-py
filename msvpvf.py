@@ -1,4 +1,5 @@
-import sys, argparse, os
+import argparse
+import os
 
 def prog_type(byte):
     if byte == int("F6", 16):
