@@ -1,3 +1,6 @@
+# NOTE: This repo is outdated!
+For updates, check the `python` branch of https://github.com/mrpapersonic/msvpvf
+
 # msvpvf
 msvpvf.py, based on msvpvf which can be found [here](https://www.focusonvegas.com/movie-studio-vegas-pro-version-faker/)
 
